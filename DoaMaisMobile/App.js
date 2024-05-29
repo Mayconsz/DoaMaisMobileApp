@@ -1,27 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { StatusBar } from 'react-native';
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
+import {NavigationContainer} from '@react-navigation/native'
+import Rotas from './src/Rotas';
 
-const Stack = createNativeStackNavigator();
-
-function App() {
+export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
+      <StatusBar backgroundColor="#38A690" barStyle="light-content" />
+      <Rotas/>
     </NavigationContainer>
   );
 }
 
-export default App;
