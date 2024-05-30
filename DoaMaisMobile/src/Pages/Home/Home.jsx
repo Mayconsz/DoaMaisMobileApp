@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { 
     Text, 
     View,
@@ -12,16 +13,16 @@ export default function Home() {
     <View style={styles.container}>
 
         <View style={styles.containerLogo}>
-                <image
-                    source={require('../../../../assets/logo.png')}
+                <Image
+                    source={require('../../../assets/logo.png')}
                     style={{width:'100%'}}
                     resizeMode="container"
                 />
         </View>
 
         <View style={styles.containerForm}>
-            <Text style={style.title}>100% de esforço onde houver 1% de chance</Text>
-            <Text style={style.title}>A vida de milhares de pacientes depende do nosso trabalho e de apoio. Por isso, a Abrale mobiliza parceiros para garantir a universalidade, equidade e integralidade no atendimento para todos.</Text>
+            <Text style={styles.title}>100% de esforço onde houver 1% de chance</Text>
+            <Text style={styles.title}>A vida de milhares de pacientes depende do nosso trabalho e de apoio. Por isso, a Abrale mobiliza parceiros para garantir a universalidade, equidade e integralidade no atendimento para todos.</Text>
 
             <TouchableOpacity>
               <Text style={styles.button}>Continuar</Text> 
