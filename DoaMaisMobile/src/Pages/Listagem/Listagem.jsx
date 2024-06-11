@@ -5,9 +5,12 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  TouchableOpacity // Adicione esta linha de importação
 } from 'react-native';
 import ApiService from '../../Services/ApiService';
 import CardDoacao from '../../Components/CardDoacao';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function Listagem() {
   useEffect(() => {
@@ -17,6 +20,7 @@ export default function Listagem() {
   const [doacoes, setDoacoes] = useState([]);
   const [doacoesExibidas, setDoacoesExibidas] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
 
   async function BuscarDoacoes() {
     const response = await ApiService.get('/PedidosDoacao'); // Substitua '/image-endpoint' pelo endpoint correto
@@ -28,7 +32,8 @@ export default function Listagem() {
   function filtrarDoacoes(text) {
     setSearchText(text);
     if (text) {
-      const filteredDoacoes = doacoes.filter(doacao => 
+      const filteredDoacoes = doacoes.filter(doacao =>
+
         doacao.titulo.toLowerCase().includes(text.toLowerCase()) ||
         doacao.ong.nome.toLowerCase().includes(text.toLowerCase())
       );
@@ -37,11 +42,11 @@ export default function Listagem() {
       setDoacoesExibidas(doacoes);
     }
   }
-  
+
 
   return (
     <View style={styles.container}>
-        <TextInput
+      <TextInput
         style={styles.searchBar}
         placeholder="Pesquisar..."
         value={searchText}
@@ -50,6 +55,7 @@ export default function Listagem() {
       <View>
         <Text style={styles.textTitle}> Anúncios publicados </Text>
       </View>
+
       <ScrollView>
         {doacoesExibidas?.map((doacao, index) => (
           <CardDoacao key={index} doacao={doacao}></CardDoacao>
@@ -81,4 +87,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 10,
   },
+  button: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#38a69d',
+    textAlign: 'center',
+    color: 'white',
+    borderRadius: 5,
+  }
 });

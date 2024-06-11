@@ -27,6 +27,7 @@ export default function App() {
         <Stack.Screen
           name="Contato"
           component={Contato}
+          options={{ headerShown: false }}
         />
 
       </Stack.Navigator>
