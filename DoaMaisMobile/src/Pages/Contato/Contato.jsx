@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Linking, Image, TouchableOpacity, Platform } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
-export default function Contato(doacao,index ) {
+export default function Contato() {
+  const route = useRoute();
+  const doacao = route.params.doacao;
+
+  function ChamarNoZap() {
+    const phoneNumber = '+55' + doacao.ong.celular; // Substitua pelo número desejado
+    const message = 'Olá! Desejo fazer uma doação!'; // Texto da mensagem
+
+    // Verifica se o dispositivo tem o aplicativo WhatsApp instalado
+    if (Platform.OS === 'android') {
+      Linking.openURL(`whatsapp://send?phone=${phoneNumber}&text=${message}`);
+    } else if (Platform.OS === 'ios') {
+      // Se o usuário tiver o aplicativo WhatsApp instalado, ele será aberto automaticamente
+      Linking.openURL(`whatsapp://send?phone=${phoneNumber}&text=${message}`);
+    } else {
+      // Se o usuário estiver em um navegador web, abra a conversa no WhatsApp web
+      Linking.openURL(`https://wa.me/${phoneNumber}?text=${message}`);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -11,22 +31,21 @@ export default function Contato(doacao,index ) {
         <FontAwesome name="search" size={20} color="black" style={styles.searchIcon} />
       </View>
       <Image style={styles.image}
-                    source={require('../../../assets/cesta_basica.png')}
-                    resizeMode="container"
-                />
-      <Text style={styles.title}>Doação de Alimento</Text>
-      <Text style={styles.subtitle}>Nome da Ong</Text>
-      <Text style={styles.description}>
-        A distribuição de alimentos satisfaz a necessidade básica, com uma alimentação mais saborosa e balanceada. Possibilita a melhoria na saúde e favorece o desenvolvimento psicomotor das pessoas assistidas, criando condições para sua inserção na sociedade e no setor produtivo.
-      </Text>
+        source={{ uri: doacao.ong.fotoPerfil }}
+        resizeMode="container"
+      />
+      <Text style={styles.title}>{doacao.titulo}</Text>
+      <Text style={styles.subtitle}>{doacao.ong.nome}</Text>
+      <Text style={styles.description}>{doacao.descricao}</Text>
       <Text style={styles.contactTitle}>FALE CONOSCO:</Text>
-      <TouchableOpacity style={styles.chatButton}>
-        <MaterialIcons name="chat" size={24} color="white" />
-        <Text style={styles.chatButtonText}>Chat</Text>
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={ChamarNoZap}
+      >
+        <FontAwesome name="whatsapp" size={24} color="white" />
+        <Text style={styles.chatButtonText}>WhatsApp</Text>
       </TouchableOpacity>
-      <Text style={styles.address}>
-        Rua Doutor Fernandes Coelho, 64 - 13º Andar - Pinheiros - São Paulo - SP - CEP: 05423-040
-      </Text>
+      <Text style={styles.address}> {doacao.ong.logradouro} {doacao.ong.numero} {doacao.ong.complemento} {doacao.ong.bairro} {doacao.ong.cidade} {doacao.ong.estado} {doacao.ong.cep}</Text>
       <StatusBar style="auto" />
     </View>
   );

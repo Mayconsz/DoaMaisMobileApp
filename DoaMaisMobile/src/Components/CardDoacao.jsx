@@ -1,5 +1,3 @@
-
-
 import { Image, Pressable, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -8,22 +6,35 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CardDoacao({ doacao }) {
     const navigation = useNavigation();
+    function navegarDoacao() {
+        navigation.navigate('Contato', { doacao });
+    }
 
     return (
-        <Pressable style={styles.container} onPress={() => navigation.navigate('Doacao', { doacao })}>
+        <Pressable style={styles.container} onPress={navegarDoacao}>
+
+
             <View style={styles.imageContainer} >
                 <Image style={styles.image} source={{
                     uri: doacao?.imagensPedido[0]?.link ?? "",
                 }}></Image>
             </View>
             <View style={styles.textContainer} >
-                <Text style={styles.title}>{doacao?.titulo}</Text>
-                {doacao?.ong?.nome &&
-                    <View style={styles.nameContainer}>
-                        <Text style={styles.ong}>{doacao?.ong?.nome}</Text>
-                    </View>
-                }
+                <View>
+                    <Text style={styles.title}>{doacao?.titulo}</Text>
+
+                    {doacao?.ong?.nome &&
+
+                        <View style={styles.nameContainer}>
+                            <Text style={styles.ong}>{doacao?.ong?.nome}</Text>
+                        </View>
+                    }
+                </View>
+
             </View>
+
+
+
         </Pressable >
     )
 }
