@@ -23,7 +23,7 @@ export default function Home() {
         </View>
 
         <View style={styles.containerForm}>
-            <Text style={styles.title}>A vida de milhares de pacientes depende do nosso trabalho e de apoio. Por isso, o DOA+ mobiliza parceiros para garantir a universalidade, equidade e integralidade no atendimento para todos.</Text>
+            <Text style={styles.title}>A vida de milhares de pessoas depende do nosso trabalho e de apoio. Por isso, o DOA+ mobiliza parceiros para garantir a universalidade, equidade e integralidade no atendimento para todos.</Text>
             <br></br>
             <Text style={styles.title}>Seja um parceiro, um doador, um voluntário e vamos juntos ajudar na situação do país e de seus cidadãos.</Text>
 
