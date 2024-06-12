@@ -36,7 +36,9 @@ export default function Contato() {
       />
       <Text style={styles.title}>{doacao.titulo}</Text>
       <Text style={styles.subtitle}>{doacao.ong.nome}</Text>
+      <View style={styles.divider}></View>
       <Text style={styles.description}>{doacao.descricao}</Text>
+      <View style={styles.divider}></View>
       <Text style={styles.contactTitle}>FALE CONOSCO:</Text>
       <TouchableOpacity
         style={styles.chatButton}
@@ -82,24 +84,44 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
+    color: '#424242',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    marginRight: 120,
+    marginTop: 10,
+    fontFamily: 'sans-serif',
   },
   subtitle: {
     fontSize: 18,
     color: '#888',
     marginBottom: 10,
+    marginRight: 235,
+    marginTop: 10,
+    fontFamily: 'sans-serif',
+  },
+  divider: {
+    width: '100%',
+    height: '1px',
+    backgroundColor: '#000',
+    margin: '20 0',
+    opacity: 0.2,
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
+    marginTop: 30,
+    textAlign: 'left',
+    fontWeight: 'bold',
+    fontFamily: 'sans-serif',
   },
   contactTitle: {
     fontSize: 18,
+    color: '#16CF8C',
     fontWeight: 'bold',
     marginBottom: 10,
+    marginTop: 60,
   },
   chatButton: {
     flexDirection: 'row',
@@ -108,6 +130,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     marginBottom: 20,
+    marginTop: 60,
   },
   chatButtonText: {
     color: 'white',
@@ -118,5 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: '#888',
+    marginTop: 30,
+    fontWeight: 'semibold',
   },
 });
