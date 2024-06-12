@@ -2,24 +2,22 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Linking, Image, TouchableOpacity, Platform } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function Contato() {
   const route = useRoute();
+  const navigation = useNavigation();
   const doacao = route.params.doacao;
 
   function ChamarNoZap() {
     const phoneNumber = '+55' + doacao.ong.celular; // Substitua pelo número desejado
     const message = 'Olá! Desejo fazer uma doação!'; // Texto da mensagem
 
-    // Verifica se o dispositivo tem o aplicativo WhatsApp instalado
     if (Platform.OS === 'android') {
       Linking.openURL(`whatsapp://send?phone=${phoneNumber}&text=${message}`);
     } else if (Platform.OS === 'ios') {
-      // Se o usuário tiver o aplicativo WhatsApp instalado, ele será aberto automaticamente
       Linking.openURL(`whatsapp://send?phone=${phoneNumber}&text=${message}`);
     } else {
-      // Se o usuário estiver em um navegador web, abra a conversa no WhatsApp web
       Linking.openURL(`https://wa.me/${phoneNumber}?text=${message}`);
     }
   }
@@ -29,11 +27,11 @@ export default function Contato() {
       <View style={styles.searchContainer}>
         <TextInput style={styles.searchInput} placeholder="Pesquisar" />
         <FontAwesome name="search" size={20} color="black" style={styles.searchIcon} />
+        <TouchableOpacity onPress={() => navigation.navigate('Listagem')}>
+          <MaterialIcons name="close" size={24} color="black" />
+        </TouchableOpacity>
       </View>
-      <Image style={styles.image}
-        source={{ uri: doacao.ong.fotoPerfil }}
-        resizeMode="container"
-      />
+      <Image style={styles.image} source={{ uri: doacao?.imagensPedido[0]?.link ?? "" }} />
       <Text style={styles.title}>{doacao.titulo}</Text>
       <Text style={styles.subtitle}>{doacao.ong.nome}</Text>
       <View style={styles.divider}></View>
@@ -44,10 +42,12 @@ export default function Contato() {
         style={styles.chatButton}
         onPress={ChamarNoZap}
       >
-        <FontAwesome name="whatsapp" size={24} color="white" />
+       <FontAwesome name="whatsapp" size={24} color="white" />
         <Text style={styles.chatButtonText}>WhatsApp</Text>
       </TouchableOpacity>
-      <Text style={styles.address}> {doacao.ong.logradouro} {doacao.ong.numero} {doacao.ong.complemento} {doacao.ong.bairro} {doacao.ong.cidade} {doacao.ong.estado} {doacao.ong.cep}</Text>
+      <Text style={styles.address}>
+        {doacao.ong.logradouro} {doacao.ong.numero} {doacao.ong.complemento} {doacao.ong.bairro} {doacao.ong.cidade} {doacao.ong.estado} {doacao.ong.cep}
+      </Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -76,7 +76,12 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     position: 'absolute',
+    right: 40,
+  },
+  close: {
+    position: 'absolute',
     right: 10,
+    padding: 10,
   },
   image: {
     width: 150,
