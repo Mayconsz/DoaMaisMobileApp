@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Linking, Image, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Platform, Linking } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
@@ -24,16 +24,18 @@ export default function Contato() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TextInput style={styles.searchInput} placeholder="Pesquisar" />
-        <FontAwesome name="search" size={20} color="black" style={styles.searchIcon} />
-        <TouchableOpacity onPress={() => navigation.navigate('Listagem')}>
-          <MaterialIcons name="close" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Listagem')}>
+        <MaterialIcons name="close" size={24} color="black" />
+      </TouchableOpacity>
       <Image style={styles.image} source={{ uri: doacao?.imagensPedido[0]?.link ?? "" }} />
       <Text style={styles.title}>{doacao.titulo}</Text>
-      <Text style={styles.subtitle}>{doacao.ong.nome}</Text>
+      <View style={styles.ongContainer}>
+      <Image style={styles.fotoPerfil}
+        source={{ uri: doacao?.ong.fotoPerfil }}
+        resizeMode="container"
+      />
+        <Text style={styles.subtitle}>{doacao.ong.nome}</Text>
+      </View>
       <View style={styles.divider}></View>
       <Text style={styles.description}>{doacao.descricao}</Text>
       <View style={styles.divider}></View>
@@ -42,11 +44,11 @@ export default function Contato() {
         style={styles.chatButton}
         onPress={ChamarNoZap}
       >
-       <FontAwesome name="whatsapp" size={24} color="white" />
+        <FontAwesome name="whatsapp" size={24} color="white" />
         <Text style={styles.chatButtonText}>WhatsApp</Text>
       </TouchableOpacity>
       <Text style={styles.address}>
-        {doacao.ong.logradouro} {doacao.ong.numero} {doacao.ong.complemento} {doacao.ong.bairro} {doacao.ong.cidade} {doacao.ong.estado} {doacao.ong.cep}
+        {`${doacao.ong.logradouro} ${doacao.ong.numero} ${doacao.ong.complemento} ${doacao.ong.bairro} ${doacao.ong.cidade} ${doacao.ong.estado} ${doacao.ong.cep}`}
       </Text>
       <StatusBar style="auto" />
     </View>
@@ -59,28 +61,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     padding: 20,
+    paddingTop: 70,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 20,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 20,
-    paddingLeft: 10,
-  },
-  searchIcon: {
+  closeButton: {
     position: 'absolute',
-    right: 40,
-  },
-  close: {
-    position: 'absolute',
-    right: 10,
+    top: 10,
+    left: 350,
     padding: 10,
   },
   image: {
@@ -93,31 +79,37 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    marginRight: 120,
     marginTop: 10,
     fontFamily: 'sans-serif',
+  },
+  ongContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  ongImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
   },
   subtitle: {
     fontSize: 18,
     color: '#888',
-    marginBottom: 10,
-    marginRight: 235,
-    marginTop: 10,
     fontFamily: 'sans-serif',
   },
   divider: {
     width: '100%',
-    height: '1px',
+    height: 1,
     backgroundColor: '#000',
-    margin: '20 0',
+    marginVertical: 20,
     opacity: 0.2,
   },
   description: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 30,
     marginTop: 30,
-    textAlign: 'left',
     fontWeight: 'bold',
     fontFamily: 'sans-serif',
   },
@@ -148,5 +140,14 @@ const styles = StyleSheet.create({
     color: '#888',
     marginTop: 30,
     fontWeight: 'semibold',
+  },
+  fotoPerfil: {
+    position: 'absolute',
+    bottom: -50,
+    right: 140,
+    width: 70,
+    height: 70,
+    borderRadius: 25,
+    marginBottom: 20,
   },
 });
