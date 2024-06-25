@@ -1,4 +1,4 @@
-import { Image, Pressable, TouchableOpacity } from 'react-native';
+import { Image, Pressable } from 'react-native';
 import { Text } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
@@ -6,37 +6,35 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CardDoacao({ doacao }) {
     const navigation = useNavigation();
+
     function navegarDoacao() {
         navigation.navigate('Contato', { doacao });
     }
 
+    console.log('Doacao data:', doacao);
+
     return (
         <Pressable style={styles.container} onPress={navegarDoacao}>
-
-
-            <View style={styles.imageContainer} >
-                <Image style={styles.image} source={{
-                    uri: doacao?.imagensPedido[0]?.link ?? "",
-                }}></Image>
+            <View style={styles.imageContainer}>
+                <Image
+                    style={styles.image}
+                    source={{
+                        uri: doacao?.imagensPedido[0]?.link ?? '',
+                    }}
+                />
             </View>
-            <View style={styles.textContainer} >
+            <View style={styles.textContainer}>
                 <View>
                     <Text style={styles.title}>{doacao?.titulo}</Text>
-
-                    {doacao?.ong?.nome &&
-
+                    {doacao?.ong?.nome && (
                         <View style={styles.nameContainer}>
                             <Text style={styles.ong}>{doacao?.ong?.nome}</Text>
                         </View>
-                    }
+                    )}
                 </View>
-
             </View>
-
-
-
-        </Pressable >
-    )
+        </Pressable>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -53,12 +51,12 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 15
+        marginTop: 15,
     },
     imageContainer: {
         display: 'flex',
         alignItems: 'center',
-        width: "40%"
+        width: '40%',
     },
     image: {
         height: 100,
@@ -66,20 +64,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     textContainer: {
-        width: "60%",
+        width: '60%',
         padding: 5,
         flex: 1,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     title: {
         fontSize: 18,
-        fontWeight: '600'
+        fontWeight: '600',
     },
     ong: {
         fontSize: 14,
-        fontWeight: '500'
+        fontWeight: '500',
     },
     nameContainer: {
-        flexDirection: 'row-reverse'
+        flexDirection: 'row-reverse',
     },
 });

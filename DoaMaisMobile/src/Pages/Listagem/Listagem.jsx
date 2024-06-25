@@ -13,35 +13,44 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Listagem() {
+  const [doacoes, setDoacoes] = useState([]);
+  const [doacoesExibidas, setDoacoesExibidas] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [filtroAtivo, setFiltroAtivo] = useState(null);
+  const navigation = useNavigation();
+
   useEffect(() => {
     buscarDoacoes();
   }, []);
 
-  const [doacoes, setDoacoes] = useState([]);
-  const [doacoesExibidas, setDoacoesExibidas] = useState([]);
-  const [searchText, setSearchText] = useState('');
-  const [filtroAtivo, setFiltroAtivo] = useState(null); // Estado para controlar o filtro ativo
-  const navigation = useNavigation();
-
   async function buscarDoacoes() {
-    const response = await ApiService.get('/PedidosDoacao');
-    setDoacoes(response);
-    setDoacoesExibidas(response);
+    try {
+      const response = await ApiService.get('/PedidosDoacao');
+      console.log('Response from API:', response);
+      setDoacoes(response);
+      setDoacoesExibidas(response);
+    } catch (error) {
+      console.error('Error fetching donations:', error);
+    }
   }
 
-  function filtrarPorTipo(tipo) {
-    // Atualizar o estado do filtro ativo
-    setFiltroAtivo(tipo);
-
-    // Filtrar doações pelo tipo selecionado
-    const filteredDoacoes = doacoes.filter(doacao => doacao.tipo === tipo);
-    setDoacoesExibidas(filteredDoacoes);
+  async function filtrarPorTipo(ID_Tipo) {
+    try {
+      const response = await ApiService.get(`/PedidosDoacao/porTipo/${ID_Tipo}`);
+      setDoacoesExibidas(response);
+      setFiltroAtivo(ID_Tipo);
+    } catch (error) {
+      console.error('Erro ao filtrar por tipo:', error);
+    }
   }
 
-  function limparFiltro() {
-    // Limpar o filtro e mostrar todas as doações
-    setFiltroAtivo(null);
-    setDoacoesExibidas(doacoes);
+  async function limparFiltro() {
+    try {
+      await buscarDoacoes();
+      setFiltroAtivo(null);
+    } catch (error) {
+      console.error('Erro ao limpar filtro:', error);
+    }
   }
 
   return (
@@ -56,37 +65,37 @@ export default function Listagem() {
       </View>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
-          style={[styles.button, filtroAtivo === 'Alimentos' && styles.buttonActive]}
-          onPress={() => filtrarPorTipo('alimentos')}
+          style={[styles.button, filtroAtivo == 1 && styles.buttonActive]}
+          onPress={() => filtrarPorTipo(1)}
         >
-          <Text style={styles.buttonText}>Alimentos</Text>
+          <Text style={styles.buttonText}>Alimento</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filtroAtivo === 'Vestuario' && styles.buttonActive]}
-          onPress={() => filtrarPorTipo('vestuario')}
+          style={[styles.button, filtroAtivo == 2 && styles.buttonActive]}
+          onPress={() => filtrarPorTipo(2)}
         >
           <Text style={styles.buttonText}>Vestuário</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filtroAtivo === 'Serviço' && styles.buttonActive]}
-          onPress={() => filtrarPorTipo('Serviço')}
+          style={[styles.button, filtroAtivo == 3 && styles.buttonActive]}
+          onPress={() => filtrarPorTipo(3)}
         >
           <Text style={styles.buttonText}>Serviço</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filtroAtivo === 'Movéis' && styles.buttonActive]}
-          onPress={() => filtrarPorTipo('Movéis')}
+          style={[styles.button, filtroAtivo == 4 && styles.buttonActive]}
+          onPress={() => filtrarPorTipo(4)}
         >
-          <Text style={styles.buttonText}>Movéis</Text>
+         <img src="https://cdn-icons-png.flaticon.com/512/864/864595.png" alt="Móveis" width={50} height={50}/>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filtroAtivo === 'outros' && styles.buttonActive]}
-          onPress={() => filtrarPorTipo('outros')}
+          style={[styles.button, filtroAtivo == 5 && styles.buttonActive]}
+          onPress={() => filtrarPorTipo(5)}
         >
           <Text style={styles.buttonText}>Outros</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#E74C3C' }]}
+          style={[styles.button, { backgroundColor: 'transparent' }]}
           onPress={limparFiltro}
         >
           <Text style={styles.buttonText}>Limpar Filtro</Text>
@@ -119,22 +128,22 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
   },
   button: {
     flex: 1,
-    height: 530,
-    backgroundColor: '#38a69d',
+    height: 60,
+    backgroundColor: 'transparent',
     borderRadius: 5,
+    borderWidth: 1, 
+    borderColor: 'transparent', 
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 5,
-  },
+  },  
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
   },
   buttonActive: {
-    backgroundColor: '#16CF8C', // Cor diferente para o botão ativo
+    backgroundColor: '#692cab6b',
   },
 });
