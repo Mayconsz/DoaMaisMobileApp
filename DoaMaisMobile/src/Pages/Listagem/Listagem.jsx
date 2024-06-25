@@ -20,55 +20,81 @@ export default function Listagem() {
   const [doacoes, setDoacoes] = useState([]);
   const [doacoesExibidas, setDoacoesExibidas] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [filtroAtivo, setFiltroAtivo] = useState(null); // Estado para controlar o filtro ativo
   const navigation = useNavigation();
 
   async function buscarDoacoes() {
     const response = await ApiService.get('/PedidosDoacao');
     setDoacoes(response);
     setDoacoesExibidas(response);
-    console.log(response);
   }
 
-  function filtrarDoacoes(text) {
-    setSearchText(text);
-    if (text) {
-      const filteredDoacoes = doacoes.filter(doacao =>
-        doacao.titulo.toLowerCase().includes(text.toLowerCase()) ||
-        doacao.ong.nome.toLowerCase().includes(text.toLowerCase())
-      );
-      setDoacoesExibidas(filteredDoacoes);
-    } else {
-      setDoacoesExibidas(doacoes);
-    }
+  function filtrarPorTipo(tipo) {
+    // Atualizar o estado do filtro ativo
+    setFiltroAtivo(tipo);
+
+    // Filtrar doações pelo tipo selecionado
+    const filteredDoacoes = doacoes.filter(doacao => doacao.tipo === tipo);
+    setDoacoesExibidas(filteredDoacoes);
   }
 
-  async function handleOrderClick() {
-    let newList = [...doacoes];
-    newList.sort((a, b) => (a.titulo > b.titulo ? 1 : b.titulo > a.titulo ? -1 : 0));
-    setDoacoesExibidas(newList);
+  function limparFiltro() {
+    // Limpar o filtro e mostrar todas as doações
+    setFiltroAtivo(null);
+    setDoacoesExibidas(doacoes);
   }
 
   return (
     <View style={styles.container}>
-       <View style={styles.searchContainer}>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Pesquise uma ong"
-        value={searchText}
-        onChangeText={text => filtrarDoacoes(text)}
-      />
-      <TouchableOpacity style={styles.orderButton} onPress={handleOrderClick}>
-        <MaterialCommunityIcons
-          name="order-alphabetical-ascending"
-          size={32}
-          color="#888"
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Pesquise uma ong"
+          value={searchText}
+          onChangeText={text => setSearchText(text)}
         />
-      </TouchableOpacity>
       </View>
-      <Text style={styles.textTitle}>Anúncios publicados</Text>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={[styles.button, filtroAtivo === 'Alimentos' && styles.buttonActive]}
+          onPress={() => filtrarPorTipo('alimentos')}
+        >
+          <Text style={styles.buttonText}>Alimentos</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, filtroAtivo === 'Vestuario' && styles.buttonActive]}
+          onPress={() => filtrarPorTipo('vestuario')}
+        >
+          <Text style={styles.buttonText}>Vestuário</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, filtroAtivo === 'Serviço' && styles.buttonActive]}
+          onPress={() => filtrarPorTipo('Serviço')}
+        >
+          <Text style={styles.buttonText}>Serviço</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, filtroAtivo === 'Movéis' && styles.buttonActive]}
+          onPress={() => filtrarPorTipo('Movéis')}
+        >
+          <Text style={styles.buttonText}>Movéis</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, filtroAtivo === 'outros' && styles.buttonActive]}
+          onPress={() => filtrarPorTipo('outros')}
+        >
+          <Text style={styles.buttonText}>Outros</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#E74C3C' }]}
+          onPress={limparFiltro}
+        >
+          <Text style={styles.buttonText}>Limpar Filtro</Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         {doacoesExibidas.map((doacao, index) => (
-          <CardDoacao key={index} doacao={doacao}></CardDoacao>
+          <CardDoacao key={index} doacao={doacao} />
         ))}
       </ScrollView>
     </View>
@@ -80,56 +106,35 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  textTitle: {
-    textAlign: 'center',
-    color: '#16CF8C',
-    fontWeight: '600',
-    fontSize: 25,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 3,
-  },
-
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 10,
   },
-
   searchBar: {
-    flex: 1,
     height: 40,
     borderColor: '#38a69d',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
   },
-
-  input: {
-    flex: 1,
-    height: 50,
-    backgroundColor: '#363636',
-    margin: 30,
-    borderRadius: 5,
-    fontSize: 19,
-    paddingLeft: 15,
-    paddingRight: 15,
-    color: '#FFFFFF',
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
-
-
   button: {
-    marginTop: 10,
-    padding: 10,
+    flex: 1,
+    height: 530,
     backgroundColor: '#38a69d',
-    textAlign: 'center',
-    color: 'white',
     borderRadius: 5,
-
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
   },
-  orderButton: {
-    padding: 10,
-    borderRadius: 5,
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  buttonActive: {
+    backgroundColor: '#16CF8C', // Cor diferente para o botão ativo
   },
 });
