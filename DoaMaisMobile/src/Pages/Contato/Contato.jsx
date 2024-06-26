@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 10,
-    left: 350,
+    left: 380,
     padding: 10,
   },
   image: {
     width: 150,
     height: 150,
-    marginBottom: 20,
+    marginBottom: 5,
   },
   title: {
     color: '#424242',
@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
   ongContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 1,
+    
   },
   ongImage: {
     width: 50,
@@ -102,8 +103,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 1,
     backgroundColor: '#000',
-    marginVertical: 20,
     opacity: 0.2,
+    marginTop: 50,
   },
   description: {
     fontSize: 16,
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     color: '#16CF8C',
     fontWeight: 'bold',
     marginBottom: 10,
-    marginTop: 60,
+    marginTop: 80,
   },
   chatButton: {
     flexDirection: 'row',
@@ -126,8 +127,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#25D366',
     padding: 10,
     borderRadius: 20,
-    marginBottom: 20,
-    marginTop: 60,
+    marginBottom: 50,
+    marginTop: 80,
   },
   chatButtonText: {
     color: 'white',
@@ -144,10 +145,11 @@ const styles = StyleSheet.create({
   fotoPerfil: {
     position: 'absolute',
     bottom: -50,
-    right: 140,
+    right: 230,
     width: 70,
     height: 70,
     borderRadius: 25,
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 50,
   },
 });

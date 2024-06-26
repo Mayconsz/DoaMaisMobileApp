@@ -86,8 +86,8 @@ export default function Listagem() {
           style={[styles.button, filtroAtivo == 4 && styles.buttonActive]}
           onPress={() => filtrarPorTipo(4)}
         >
-         <img src="https://cdn-icons-png.flaticon.com/512/864/864595.png" alt="Móveis" width={50} height={50}/>
-        </TouchableOpacity>
+          <Text style={styles.buttonText}>Movéis</Text>
+          </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, filtroAtivo == 5 && styles.buttonActive]}
           onPress={() => filtrarPorTipo(5)}
