@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   fotoPerfil: {
     position: 'absolute',
     bottom: -50,
-    right: 230,
+    right: 200,
     width: 70,
     height: 70,
     borderRadius: 25,

@@ -18,6 +18,7 @@ export default function Listagem() {
   const [searchText, setSearchText] = useState('');
   const [filtroAtivo, setFiltroAtivo] = useState(null);
   const navigation = useNavigation();
+  
 
   useEffect(() => {
     buscarDoacoes();
@@ -31,6 +32,18 @@ export default function Listagem() {
       setDoacoesExibidas(response);
     } catch (error) {
       console.error('Error fetching donations:', error);
+    }
+  }
+  function filtrarDoacoes(text) {
+    setSearchText(text);
+    if (text) {
+      const filteredDoacoes = doacoes.filter(doacao => 
+        doacao.titulo.toLowerCase().includes(text.toLowerCase()) ||
+        doacao.ong.nome.toLowerCase().includes(text.toLowerCase())
+      );
+      setDoacoesExibidas(filteredDoacoes);
+    } else {
+      setDoacoesExibidas(doacoes);
     }
   }
 
@@ -57,11 +70,11 @@ export default function Listagem() {
     <View style={styles.container}>
       <View style={styles.searchContainer}>
         <TextInput
-          style={styles.searchBar}
-          placeholder="Pesquise uma ong"
-          value={searchText}
-          onChangeText={text => setSearchText(text)}
-        />
+        style={styles.searchBar}
+        placeholder="Pesquisar..."
+        value={searchText}
+        onChangeText={text => filtrarDoacoes(text)}
+      />
       </View>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
